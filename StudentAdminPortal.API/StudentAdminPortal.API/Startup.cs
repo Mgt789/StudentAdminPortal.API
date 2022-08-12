@@ -30,6 +30,22 @@ namespace StudentAdminPortal.API
         public void ConfigureServices(IServiceCollection services)
         {
 
+            //services.AddCors((options) =>
+            //{
+            //    options.AddPolicy("angularApplication", (builder) =>
+            //    {
+            //        builder.WithOrigins("http://localhost:4200/")
+            //        .AllowAnyHeader()
+            //        .WithMethods("GET", "POST", "PUT", "DELETE")
+            //        .WithExposedHeaders("*");
+            //    });
+            //});
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            });
+
+
             services.AddControllers();
 
             services.AddDbContext<StudentAdminContext>(options =>
@@ -59,12 +75,15 @@ namespace StudentAdminPortal.API
 
             app.UseRouting();
 
+            app.UseCors("angularApplication");
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+            app.UseCors("AllowOrigin");
         }
     }
 }
